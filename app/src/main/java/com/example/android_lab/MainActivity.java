@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MySQLite db = new MySQLite(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -27,14 +30,18 @@ public class MainActivity extends AppCompatActivity {
         this.target = new ArrayList<String>();
         this.target.addAll(Arrays.asList(values));
 
-        this.adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, this.target);
+        //this.adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, this.target);
+        this.adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2,
+                db.lista(), new String[] {"_id", "gatunek"}, new int[] {android.R.id.text1,
+                android.R.id.text2}, SimpleCursorAdapter.IGNORE_ITEM_VIEW_TYPE);
 
         ListView listview = (ListView) findViewById(R.id.listView);
         listview.setAdapter(this.adapter);
+
     }
 
     private ArrayList<String> target;
-    private ArrayAdapter adapter;
+    private SimpleCursorAdapter adapter;
 
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
