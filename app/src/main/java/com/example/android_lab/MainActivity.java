@@ -15,10 +15,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
+    protected MySQLite db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MySQLite db = new MySQLite(this);
+        db = new MySQLite(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -59,8 +60,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 1 && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            String nowy = (String)extras.get("wpis");
-            target.add(nowy);
+            Animal nowy = (Animal) extras.getSerializable("nowy");
+            this.db.dodaj(nowy);
+            //String nowy = (String)extras.get("wpis");
+            //target.add(nowy);
+            adapter.changeCursor(db.lista());
             adapter.notifyDataSetChanged();
         }
     }
