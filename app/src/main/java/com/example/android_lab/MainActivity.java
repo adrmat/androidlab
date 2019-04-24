@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
+    private ArrayList<String> target;
+    private SimpleCursorAdapter adapter;
     protected MySQLite db;
 
     @Override
@@ -52,10 +54,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView name = (TextView) view.findViewById(android.R.id.text1);
+
+                db.usun(name.getText().toString());
+                adapter.changeCursor(db.lista());
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+
     }
 
-    private ArrayList<String> target;
-    private SimpleCursorAdapter adapter;
 
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
